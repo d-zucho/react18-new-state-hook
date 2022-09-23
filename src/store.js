@@ -2,6 +2,7 @@
 //? and keeps track of current target
 function createStore(initialState) {
   let currentState = initialState
+  const listeners = new Set()
 
   //* In store, we have 3 abilities:
   //*   1. get the state: getState
@@ -11,6 +12,10 @@ function createStore(initialState) {
   return {
     getState: () => currentState,
     setState: (newState) => (currentState = newState),
+    subscribe: (listener) => {
+      listeners.add(listener)
+      return () => listeners.delete(listener)
+    },
   }
 }
 
@@ -18,4 +23,7 @@ function createStore(initialState) {
 const store = createStore({
   value1: 0,
   value2: 0,
+  value3: 0,
 })
+
+export default store
