@@ -11,7 +11,10 @@ function createStore(initialState) {
 
   return {
     getState: () => currentState,
-    setState: (newState) => (currentState = newState),
+    setState: (newState) => {
+      currentState = newState
+      listeners.forEach((listener) => listener(currentState))
+    },
     subscribe: (listener) => {
       listeners.add(listener)
       return () => listeners.delete(listener)
@@ -23,7 +26,6 @@ function createStore(initialState) {
 const store = createStore({
   value1: 0,
   value2: 0,
-  value3: 0,
 })
 
 export default store

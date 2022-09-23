@@ -1,9 +1,22 @@
 import store from './store'
 import './index.css'
+import { useEffect, useState } from 'react'
+
+//? create custom hook to connect store to application
+const useStore = () => {
+  //* This will
+  //* Subscribe to the store, and
+  //* update the state when things actually change
+  const [state, setState] = useState(store.getState())
+
+  useEffect(() => store.subscribe(setState), [])
+
+  return state
+}
 
 const DisplayValue = ({ item }) => (
   <div>
-    {item}: {store.getState()[item]}
+    {item}: {useStore()[item]}
   </div>
 )
 
