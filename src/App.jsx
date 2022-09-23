@@ -3,20 +3,21 @@ import './index.css'
 import { useEffect, useState } from 'react'
 
 //? create custom hook to connect store to application
-const useStore = () => {
+//* use selector to update only the piece of state that is getting updated
+const useStore = (selector = (state) => state) => {
   //* This will
   //* Subscribe to the store, and
   //* update the state when things actually change
-  const [state, setState] = useState(store.getState())
+  const [state, setState] = useState(selector(store.getState()))
 
-  useEffect(() => store.subscribe(setState), [])
+  useEffect(() => store.subscribe((state) => setState(selector(state))), [])
 
   return state
 }
 
 const DisplayValue = ({ item }) => (
   <div>
-    {item}: {useStore()[item]}
+    {item}: {useStore((state) => state[item])}
   </div>
 )
 
